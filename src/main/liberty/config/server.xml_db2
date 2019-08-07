@@ -1,0 +1,36 @@
+<server>
+  <featureManager>
+    <feature>servlet-4.0</feature>
+    <feature>jsp-2.3</feature>
+    <feature>jndi-1.0</feature>
+    <feature>jdbc-4.2</feature>
+    <feature>websocket-1.1</feature>
+    <feature>ssl-1.0</feature>
+  </featureManager>
+  
+  <!--<logging traceSpecification="daytrader=fine"/>-->
+
+  <!-- allow reuse of 'busy' ports for fast server recycling on linux (where ports remain blocked for up to 2 mins after server stops) ${tradelite.http.port} set in bootstrap.properties --> 
+  <httpEndpoint host="*" httpPort="9080" httpsPort="9443" id="defaultHttpEndpoint"> 
+    <tcpOptions soReuseAddr="true"/> 
+    <httpOptions maxKeepAliveRequests="-1"/>
+  </httpEndpoint>
+
+  <webApplication id="tradelite8" location="io.openliberty.sample.tradelite8.war" name="tradelite8" context-root="tradelite"/>
+
+  <keyStore id="defaultKeyStore" password="yourPassword" />
+
+  <connectionManager agedTimeout="-1" connectionTimeout="0" id="conMgr1" maxIdleTime="-1" maxPoolSize="100" minPoolSize="100" purgePolicy="FailingConnectionOnly" reapTime="-1"/> 
+
+  <jdbcDriver id="DB2JCC" libraryRef="DB2JCCLib"/>
+  <library id="DB2JCCLib" filesetRef="DB2JCCFileset"/>
+  <fileset id="DB2JCCFileset" dir="${shared.resource.dir}/db2jars" includes="db2jcc4.jar"/>
+
+  <authData id="TradeDataSourceAuthData" user="${env.dbUser}" password="${env.dbPass}"/>
+  <authData id="TradeAdminAuthData" user="${env.dbUser}" password="${env.dbPass}"/>
+
+  <dataSource jndiName="jdbc/TradeDataSource" jdbcDriverRef="DB2JCC" id="DefaultDataSource" connectionManagerRef="conMgr1" statementCacheSize="60" isolationLevel="TRANSACTION_READ_COMMITTED" type="javax.sql.ConnectionPoolDataSource">
+    <properties serverName="${env.tradeDbHost}" portNumber="${env.tradeDbPort}" databaseName="${env.tradeDbName}" driverType="4" user="${env.dbUser}" password="${env.dbPass}"/>
+  </dataSource>
+
+</server>
