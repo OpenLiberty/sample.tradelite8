@@ -7,7 +7,7 @@ Tradelite is an end-to-end benchmark and performance sample application.
 This sample can be installed onto Liberty runtime versions 18.0.0.2 and later. A prebuilt derby database is provided in resources/data
 
 
-To run this sample, first [download](https://github.com/OpenLiberty/sample.daytrader8/archive/master.zip) or clone this repo - to clone:
+To run this sample, first [download](https://github.com/OpenLiberty/sample.tradelite8/archive/master.zip) or clone this repo - to clone:
 ```
 git clone git@github.com:OpenLiberty/sample.tradelite8.git
 ```
